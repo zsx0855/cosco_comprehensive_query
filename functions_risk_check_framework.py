@@ -131,11 +131,31 @@ class CheckResult:
         
         # 添加道琼斯制裁风险检查的额外字段
         if self.risk_screening_time is not None:
-            result["risk_screening_time"] = self.risk_screening_time
+            # 确保时间格式统一为 YYYY-MM-DD HH:MM:SS
+            if isinstance(self.risk_screening_time, str) and 'T' in self.risk_screening_time:
+                # 处理ISO格式时间
+                from datetime import datetime
+                try:
+                    dt = datetime.fromisoformat(self.risk_screening_time.replace('Z', '+00:00'))
+                    result["risk_screening_time"] = dt.strftime("%Y-%m-%d %H:%M:%S")
+                except:
+                    result["risk_screening_time"] = self.risk_screening_time
+            else:
+                result["risk_screening_time"] = self.risk_screening_time
         if self.risk_status_change_content is not None:
             result["risk_status_change_content"] = self.risk_status_change_content
         if self.risk_status_change_time is not None:
-            result["risk_status_change_time"] = self.risk_status_change_time
+            # 确保时间格式统一为 YYYY-MM-DD HH:MM:SS
+            if isinstance(self.risk_status_change_time, str) and 'T' in self.risk_status_change_time:
+                # 处理ISO格式时间
+                from datetime import datetime
+                try:
+                    dt = datetime.fromisoformat(self.risk_status_change_time.replace('Z', '+00:00'))
+                    result["risk_status_change_time"] = dt.strftime("%Y-%m-%d %H:%M:%S")
+                except:
+                    result["risk_status_change_time"] = self.risk_status_change_time
+            else:
+                result["risk_status_change_time"] = self.risk_status_change_time
         if self.risk_status_reason is not None:
             result["risk_status_reason"] = self.risk_status_reason
         

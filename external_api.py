@@ -1461,6 +1461,10 @@ async def external_voyage_risk(req: VoyageRiskRequest) -> VoyageRiskResponse:
             shipper_responses = []
         else:
             for shipper in req.shipper:
+                # 检查实体名称是否为空
+                if not shipper.shipper or shipper.shipper.strip() == "":
+                    continue
+                    
                 shipper_risk_data = query_sanctions_risk(shipper.shipper)
                 shipper_risk = shipper_risk_data['risk_level']
                 all_risk_statuses.append(shipper_risk)
@@ -1481,6 +1485,10 @@ async def external_voyage_risk(req: VoyageRiskRequest) -> VoyageRiskResponse:
             shipper_controller_responses = []
         else:
             for controller in req.shipper_actual_controller:
+                # 检查实体名称是否为空
+                if not controller.shipper_actual_controller or controller.shipper_actual_controller.strip() == "":
+                    continue
+                    
                 controller_risk_data = query_sanctions_risk(controller.shipper_actual_controller)
                 controller_risk = controller_risk_data['risk_level']
                 all_risk_statuses.append(controller_risk)
